@@ -1,0 +1,22 @@
+*.ts
+!*.d.ts
+
+.git/
+src/
+test/
+reports/
+
+.gitignore
+.nvmrc
+.prettierrc
+eslint.config.mjs
+jest.config.js
+stryker.conf.js
+tsconfig.json
+
+# Secrets
+.env
+.npmrc
+
+# Local
+local.js
