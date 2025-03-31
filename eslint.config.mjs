@@ -93,4 +93,10 @@ export default [
       ],
     },
   },
+  {
+    files: ["**/*.test.{js,mjs,cjs,ts}", "**/*.spec.{js,mjs,cjs,ts}"],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ];
