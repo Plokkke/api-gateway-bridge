@@ -15,7 +15,7 @@ export type ApiGatewayAuth = z.infer<typeof apiGatewayAuthSchema>;
 export const apiGatewayConfigSchema = z
   .object({
     host: z.string().url(),
-    endpoint: z.string(),
+    endpoint: z.string().optional(),
     authentication: apiGatewayAuthSchema.optional(),
     authentications: z.array(apiGatewayAuthSchema).optional().default([]),
   })
@@ -44,9 +44,9 @@ function applyAuthentication(instance: AxiosInstance, auth: ApiGatewayAuth) {
   }
 }
 
-export function apiGatewayApi(config: ApiGatewayConfig): AxiosInstance {
+export function configureApiGateway(config: ApiGatewayConfig): AxiosInstance {
   const instance = axios.create({
-    baseURL: `${config.host}${config.endpoint}`,
+    baseURL: `${config.host}${config.endpoint ?? ''}`,
     allowAbsoluteUrls: false,
   } as AxiosRequestConfig);
 

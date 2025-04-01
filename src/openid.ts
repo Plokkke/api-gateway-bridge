@@ -6,7 +6,7 @@ export const ccfTokenConfigSchema = z.object({
   issuer: z.string(),
   clientId: z.string(),
   clientSecret: z.string(),
-  scopes: z.array(z.string()),
+  scopes: z.array(z.string()).optional().default([]),
 });
 
 export type CCFTokenConfig = z.infer<typeof ccfTokenConfigSchema>;

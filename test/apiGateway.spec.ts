@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { apiGatewayApi, apiGatewayConfigSchema } from '@/apiGateway';
+import { configureApiGateway, apiGatewayConfigSchema } from '@/apiGateway';
 import { tokenInjector } from '@/openid';
 
 // Mock axios
@@ -84,6 +84,44 @@ describe('API Gateway', () => {
       expect(result.authentications).toHaveLength(1);
       expect(result.authentications[0]).toEqual(config.authentication);
     });
+
+    it('should validate configuration without endpoint', () => {
+      const config = {
+        host: 'https://api.example.com',
+        authentication: {
+          field: 'X-API-Key',
+          key: 'test-key',
+        },
+      };
+      expect(() => apiGatewayConfigSchema.parse(config)).not.toThrow();
+    });
+
+    it('should validate OpenID configuration without scopes', () => {
+      const config = {
+        ...mockBaseConfig,
+        authentication: {
+          issuer: 'https://test-issuer.com',
+          clientId: 'test-client-id',
+          clientSecret: 'test-client-secret',
+        },
+      };
+      expect(() => apiGatewayConfigSchema.parse(config)).not.toThrow();
+    });
+
+    it('should create axios instance with correct base URL when endpoint is not provided', () => {
+      const config = apiGatewayConfigSchema.parse({
+        host: 'https://api.example.com',
+        authentication: {
+          field: 'X-API-Key',
+          key: 'test-key',
+        },
+      });
+      configureApiGateway(config);
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: 'https://api.example.com',
+        allowAbsoluteUrls: false,
+      });
+    });
   });
 
   describe('API Gateway Instance', () => {
@@ -95,7 +133,7 @@ describe('API Gateway', () => {
           key: 'test-key',
         },
       });
-      apiGatewayApi(config);
+      configureApiGateway(config);
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: 'https://api.example.com/v1',
         allowAbsoluteUrls: false,
@@ -111,7 +149,7 @@ describe('API Gateway', () => {
         ...mockBaseConfig,
         authentication: apiKeyAuth,
       });
-      const instance = apiGatewayApi(config);
+      const instance = configureApiGateway(config);
       expect(instance.defaults.headers.common['X-API-Key']).toBe('test-key');
     });
 
@@ -126,7 +164,7 @@ describe('API Gateway', () => {
         ...mockBaseConfig,
         authentication: openIdAuth,
       });
-      const instance = apiGatewayApi(config);
+      const instance = configureApiGateway(config);
       expect(instance.interceptors.request.use).toHaveBeenCalledWith(tokenInjector(openIdAuth));
     });
 
@@ -147,7 +185,7 @@ describe('API Gateway', () => {
           openIdAuth,
         ],
       });
-      const instance = apiGatewayApi(config);
+      const instance = configureApiGateway(config);
       expect(instance.defaults.headers.common['X-API-Key']).toBe('test-key');
       expect(instance.interceptors.request.use).toHaveBeenCalledWith(tokenInjector(openIdAuth));
     });
