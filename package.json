@@ -1,9 +1,20 @@
 {
+  "private": false,
   "name": "@plokkke/api-gateway-bridge",
   "description": "API Gateway Bridge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Antoine Caron <antoine@crn-tech.fr>",
   "license": "ISC",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/plokkke/api-gateway-bridge"
+  },
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json && tsc-alias",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
