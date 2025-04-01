@@ -1,2 +1,10 @@
-export * from './apiGateway';
-export * from './openid';
+export {
+  apiKeySchema,
+  apiGatewayAuthSchema,
+  apiGatewayConfigSchema,
+  ApiKey,
+  ApiGatewayAuth,
+  ApiGatewayConfig,
+  configureApiGateway,
+} from './apiGateway';
+export { ccfTokenConfigSchema, CCFTokenConfig, tokenInjector } from './openid';

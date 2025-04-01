@@ -2,7 +2,7 @@
   "private": false,
   "name": "@plokkke/api-gateway-bridge",
   "description": "API Gateway Bridge",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Antoine Caron <antoine@crn-tech.fr>",
   "license": "ISC",
   "files": [
