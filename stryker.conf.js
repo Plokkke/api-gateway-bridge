@@ -12,7 +12,7 @@ module.exports = {
   },
   checkers: ['typescript'],
   tsconfigFile: 'tsconfig.json',
-  incremental: true,
+  incremental: false,
   ignoreStatic: true,
   mutate: [
     'src/**/*.ts',
